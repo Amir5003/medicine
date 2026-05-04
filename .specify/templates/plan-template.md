@@ -31,7 +31,19 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify each of MediCore's 7 Laws against this feature's planned behaviour:
+
+| Law | Relevant? | Compliant? | Notes |
+|---|---|---|---|
+| I. Salt Integrity — alternates only on exact saltFingerprint match | [ ] Yes / No | [ ] Pass / N/A | |
+| II. Savings Honesty — savings = real-time price diff only | [ ] Yes / No | [ ] Pass / N/A | |
+| III. Guest First — full flow without login, signup at payment only | [ ] Yes / No | [ ] Pass / N/A | |
+| IV. Stock Truth — OOS medicine cannot be added to cart | [ ] Yes / No | [ ] Pass / N/A | |
+| V. Prescription Flag — block checkout without upload for Rx meds | [ ] Yes / No | [ ] Pass / N/A | |
+| VI. Mobile First — design & test at 360 px first | [ ] Yes / No | [ ] Pass / N/A | |
+| VII. Animation Purpose — every animation has a functional reason | [ ] Yes / No | [ ] Pass / N/A | |
+
+**GATE RESULT**: [ ] PASS — proceed to research / [ ] BLOCKED — resolve violations above
 
 ## Project Structure
 
@@ -56,43 +68,35 @@ specs/[###-feature]/
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
+# MediCore MERN Monorepo
+client/
+└── src/
+    ├── app/                   # Redux store
+    ├── features/              # Redux slices: cart, auth, medicines
+    ├── pages/                 # Route-level pages
+    ├── components/
+    │   ├── ui/                # Atomic: Buttons, Badges, Cards
+    │   ├── medicine/          # MedicineCard, AlternatePanel, SavingsBadge
+    │   ├── cart/              # CartDrawer, CartItem
+    │   └── layout/            # Navbar, Footer
+    ├── hooks/
+    └── utils/
+
+server/
 ├── models/
-├── services/
-├── cli/
-└── lib/
+├── routes/
+├── controllers/
+├── middleware/                # auth, role, error, upload
+├── services/                  # saltAlternateService, paymentService
+├── config/                    # db.js, cloudinary.js
+└── seed/
 
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+shared/                        # Shared enums: roles, order statuses
+specs/                         # SpecKit artefacts per feature
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: MERN monorepo — `client/` (React/Vite) + `server/` (Express) +
+`shared/` (enums). All spec artefacts live under `specs/[###-feature-name]/`.
 
 ## Complexity Tracking
 

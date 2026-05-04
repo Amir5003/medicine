@@ -18,12 +18,17 @@ description: "Task list template for feature implementation"
 - **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
 - Include exact file paths in descriptions
 
-## Path Conventions
+## Path Conventions (MediCore MERN Monorepo)
 
-- **Single project**: `src/`, `tests/` at repository root
-- **Web app**: `backend/src/`, `frontend/src/`
-- **Mobile**: `api/src/`, `ios/src/` or `android/src/`
-- Paths shown below assume single project - adjust based on plan.md structure
+- **Backend models/services/routes**: `server/models/`, `server/services/`, `server/routes/`, `server/controllers/`
+- **Backend middleware/config**: `server/middleware/`, `server/config/`
+- **Frontend pages**: `client/src/pages/`
+- **Frontend components**: `client/src/components/{ui,medicine,cart,layout}/`
+- **Zustand stores**: `client/src/stores/` (e.g., `useCartStore.js`, `useAuthStore.js`, `useUIStore.js`)
+- **TanStack Query hooks**: `client/src/hooks/` (e.g., `useMedicines.js`, `useOrder.js`)
+- **Shared enums**: `shared/`
+- **Seed scripts**: `server/seed/`
+- Paths in task descriptions MUST use these roots exactly as defined in `plan.md`
 
 <!-- 
   ============================================================================
