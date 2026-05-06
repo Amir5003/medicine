@@ -43,7 +43,7 @@ Create `server/.env` (copy from `server/.env.example`):
 
 ```env
 NODE_ENV=development
-PORT=5000
+PORT=5001
 MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/medicore?retryWrites=true&w=majority
 JWT_SECRET=<random-32-char-string>
 JWT_EXPIRE=7d
@@ -58,7 +58,7 @@ CLIENT_URL=http://localhost:5173
 ### Client — `client/.env`
 
 ```env
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5001/api
 VITE_RAZORPAY_KEY_ID=<rzp_test_... same as server>
 ```
 
@@ -89,7 +89,7 @@ This runs `server/seed/seedMedicines.js` and inserts 50+ medicines across 10 cat
 ## 4. Run Locally
 
 ```bash
-# Terminal 1 — backend (port 5000)
+# Terminal 1 — backend (port 5001)
 cd server
 npm run dev
 
