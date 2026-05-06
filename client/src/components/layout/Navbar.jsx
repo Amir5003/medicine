@@ -73,7 +73,7 @@ export default function Navbar() {
           <SearchIcon />
         </button>
 
-        {/* Right actions */}}
+        {/* Right actions */}
         <div className="flex items-center gap-3 flex-shrink-0">
           {/* Cart button */}
           <button
