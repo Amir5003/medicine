@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from 'cloudinary'
-import { CloudinaryStorage } from 'multer-storage-cloudinary'
 import multer from 'multer'
 
 cloudinary.config({
@@ -8,21 +7,48 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-const medicineStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'medicore/medicines',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-    transformation: [{ width: 800, height: 800, crop: 'limit' }],
-  },
+/**
+ * Custom multer storage engine for Cloudinary v2.
+ * Streams the upload directly to Cloudinary without writing to disk.
+ */
+function createCloudinaryStorage({ folder, allowedFormats, transformation }) {
+  return {
+    _handleFile(_req, file, cb) {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder,
+          allowed_formats: allowedFormats,
+          ...(transformation ? { transformation } : {}),
+        },
+        (error, result) => {
+          if (error) return cb(error)
+          cb(null, {
+            fieldname: file.fieldname,
+            originalname: file.originalname,
+            filename: result.public_id,
+            path: result.secure_url,
+            size: result.bytes,
+            mimetype: file.mimetype,
+          })
+        }
+      )
+      file.stream.pipe(uploadStream)
+    },
+    _removeFile(_req, file, cb) {
+      cloudinary.uploader.destroy(file.filename, cb)
+    },
+  }
+}
+
+const medicineStorage = createCloudinaryStorage({
+  folder: 'medicore/medicines',
+  allowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
+  transformation: [{ width: 800, height: 800, crop: 'limit' }],
 })
 
-const prescriptionStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'medicore/prescriptions',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'pdf'],
-  },
+const prescriptionStorage = createCloudinaryStorage({
+  folder: 'medicore/prescriptions',
+  allowedFormats: ['jpg', 'jpeg', 'png', 'pdf'],
 })
 
 export const uploadMedicineImage = multer({ storage: medicineStorage })
