@@ -1,0 +1,30 @@
+# Version control
+.git
+.gitignore
+
+# Client (not needed in server image)
+client/
+
+# Dev tooling
+*.md
+docs/
+specs/
+.vscode/
+
+# Node modules (installed fresh in Docker)
+node_modules/
+server/node_modules/
+client/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local env files (injected via Render env vars)
+server/.env
+client/.env
+.env
+
+# OS artifacts
+.DS_Store
+Thumbs.db
