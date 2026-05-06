@@ -2,7 +2,14 @@ import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
 
 export const protect = async (req, res, next) => {
-  const token = req.cookies?.token
+  // Accept token from cookie (same-origin / local) or Authorization header (cross-origin production)
+  let token = req.cookies?.token
+  if (!token) {
+    const authHeader = req.headers.authorization
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.slice(7)
+    }
+  }
 
   if (!token) {
     return res.status(401).json({

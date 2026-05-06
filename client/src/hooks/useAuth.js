@@ -27,10 +27,12 @@ export const useMe = () => {
 export const useRegister = () => {
   const queryClient = useQueryClient()
   const setUser = useAuthStore((s) => s.setUser)
+  const setToken = useAuthStore((s) => s.setToken)
 
   return useMutation({
     mutationFn: (data) => api.post('/api/auth/register', data),
     onSuccess: (data) => {
+      if (data.token) setToken(data.token)
       setUser(data.user)
       queryClient.setQueryData(['me'], data)
     },
@@ -40,10 +42,12 @@ export const useRegister = () => {
 export const useLogin = () => {
   const queryClient = useQueryClient()
   const setUser = useAuthStore((s) => s.setUser)
+  const setToken = useAuthStore((s) => s.setToken)
 
   return useMutation({
     mutationFn: (data) => api.post('/api/auth/login', data),
     onSuccess: (data) => {
+      if (data.token) setToken(data.token)
       setUser(data.user)
       queryClient.setQueryData(['me'], data)
     },
@@ -53,11 +57,13 @@ export const useLogin = () => {
 export const useLogout = () => {
   const queryClient = useQueryClient()
   const clearUser = useAuthStore((s) => s.clearUser)
+  const clearToken = useAuthStore((s) => s.clearToken)
 
   return useMutation({
     mutationFn: () => api.post('/api/auth/logout'),
     onSuccess: () => {
       clearUser()
+      clearToken()
       queryClient.clear()
     },
   })

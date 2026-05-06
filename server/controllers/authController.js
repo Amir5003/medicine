@@ -36,6 +36,7 @@ export const register = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
+      token,
       user: { _id: user._id, name: user.name, email: user.email, role: user.role },
     })
   } catch (err) {
@@ -70,6 +71,7 @@ export const login = async (req, res, next) => {
 
     res.json({
       success: true,
+      token,
       user: { _id: user._id, name: user.name, email: user.email, role: user.role },
     })
   } catch (err) {

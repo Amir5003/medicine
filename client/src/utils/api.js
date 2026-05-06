@@ -15,9 +15,16 @@ api.interceptors.response.use(
   }
 )
 
-// Request interceptor placeholder
+// Attach Bearer token for cross-origin production requests
 api.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    const token = localStorage.getItem('medicore_token')
+    if (token) {
+      config.headers = config.headers || {}
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
   (error) => Promise.reject(error)
 )
 
